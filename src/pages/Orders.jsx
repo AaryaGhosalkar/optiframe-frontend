@@ -6,22 +6,26 @@ export default function Orders() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const customer = JSON.parse(localStorage.getItem("customer"));
+  const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    if (!customer) {
-      navigate("/customer-login");
-      return;
-    }
+  if (!storedUser) {
+    window.location.href = "/login";
+    return;
+  }
 
-    fetch("https://optiframe-backend.onrender.com/api/orders")
-      .then((res) => res.json())
-      .then((data) => {
-        const userOrders = data.filter(
-          (order) => order.customerEmail === customer.email
-        );
-        setOrders(userOrders);
-      });
-  }, [navigate]);
+  fetch("https://optiframe-backend.onrender.com/api/orders")
+    .then((res) => res.json())
+    .then((data) => {
+      const userOrders = data.filter(
+        (order) => order.customerEmail === storedUser.email
+      );
+      setOrders(userOrders);
+    })
+    .catch((err) => {
+      console.error("Error fetching orders:", err);
+    });
+
+}, []);
 
   return (
     <div style={styles.page}>

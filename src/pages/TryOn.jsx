@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { FaceMesh } from "@mediapipe/face_mesh";
 import { Camera } from "@mediapipe/camera_utils";
 
-const API_URL = "https://optiframe-backend.onrender.com";
+const API_URL = "https://optiframe-backend.onrender.com/api";
 
 export default function TryOn() {
   const videoRef = useRef(null);

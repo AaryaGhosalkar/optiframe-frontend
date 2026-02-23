@@ -19,11 +19,11 @@ export default function CustomerDashboard() {
 
         <div style={styles.buttons}>
           <button
-            style={styles.button}
-            onClick={() => navigate("/orders")}
+          onClick={() => window.location.href = "/orders"}
+          className="lux-btn"
           >
             Your Orders
-          </button>
+            </button>
 
           <button
             style={styles.button}

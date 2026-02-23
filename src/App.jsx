@@ -8,7 +8,7 @@ import Checkout from "./pages/Checkout";
 import LoginSelector from "./pages/LoginSelector";
 import CustomerLogin from "./pages/CustomerLogin";
 import CustomerRegister from "./pages/CustomerRegister";
-import Orders from "./pages/Order";
+import Orders from "./pages/Orders";
 import TryOn from "./pages/TryOn";
 import AdminLogin from "./pages/AdminLogin";
 import CustomerDahboard from "./pages/CustomerDashboard";

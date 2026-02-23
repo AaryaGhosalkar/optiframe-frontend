@@ -102,7 +102,7 @@ export default function TryOn() {
       {/* Frame from product */}
       <img
         ref={frameRef}
-        src={`https://optiframe-backend.onrender.com $/frames/frame1.png`}
+        src={`frame1.png`}
         alt="frame"
         style={styles.overlay}
       />

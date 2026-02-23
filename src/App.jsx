@@ -54,7 +54,7 @@ function Navbar() {
             </button>
           </>
         ) : (
-          <Link to="/customer-login">Login</Link>
+          <Link to="/login">Login</Link>
         )}
       </div>
     </nav>

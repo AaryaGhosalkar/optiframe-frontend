@@ -6,7 +6,7 @@ export default function Checkout() {
   const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
 
-  const customer = JSON.parse(localStorage.getItem("customer"));
+  const [loading, setLoading] = useState(true);
 
   const [form, setForm] = useState({
     fullName: "",
@@ -19,16 +19,16 @@ export default function Checkout() {
     landmark: "",
   });
 
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
     if (!storedUser) {
       window.location.href = "/login";
       return;
     }
+    setLoading(false);
+  }, []);
 
-  setLoading(false);
-
-}, []);
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -48,51 +48,74 @@ export default function Checkout() {
       return;
     }
 
-    const options = {
-      key: "rzp_test_1234567890", // <-- Replace with your Razorpay test key
-      amount: total * 100,
-      currency: "INR",
-      name: "OptiFrame",
-      description: "Eyewear Purchase",
-      handler: async function (response) {
-        // After successful payment create order
-
-        await fetch("https://optiframe-backend.onrender.com/api/orders", {
+    try {
+      // 1️⃣ Create Razorpay order from backend
+      const res = await fetch(
+        "https://optiframe-backend.onrender.com/api/payment/create-order",
+        {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            customerEmail: customer.email,
-            items: cartItems,
-            totalAmount: total,
-            shippingAddress: form,
-            paymentId: response.razorpay_payment_id,
-          }),
-        });
+          body: JSON.stringify({ amount: total }),
+        }
+      );
 
-        alert("Payment Successful!");
-        clearCart();
-        navigate("/order-success");
-      },
-      prefill: {
-        name: form.fullName,
-        email: customer.email,
-        contact: form.phone,
-      },
-      theme: {
-        color: "#111",
-      },
-    };
+      const order = await res.json();
 
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+      // 2️⃣ Open Razorpay popup
+      const options = {
+        key: "rzp_test_SJjZfILcxAlVBJ", // <-- PUT YOUR TEST KEY HERE
+        amount: order.amount,
+        currency: order.currency,
+        order_id: order.id,
+        name: "OptiFrame",
+        description: "Eyewear Purchase",
+
+        handler: async function (response) {
+          // 3️⃣ Save order in database
+          await fetch(
+            "https://optiframe-backend.onrender.com/api/orders",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                customerEmail: storedUser.email,
+                items: cartItems,
+                totalAmount: total,
+                shippingAddress: form,
+                paymentId: response.razorpay_payment_id,
+              }),
+            }
+          );
+
+          clearCart();
+          window.location.href = "/order-success";
+        },
+
+        prefill: {
+          name: form.fullName,
+          email: storedUser.email,
+          contact: form.phone,
+        },
+
+        theme: { color: "#111" },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
+    } catch (err) {
+      alert("Payment failed");
+      console.error(err);
+    }
   };
+
+  if (loading) return null;
 
   return (
     <div style={styles.page}>
       <h1>Checkout</h1>
 
       <div style={styles.container}>
-        {/* Address Form */}
         <div style={styles.formSection}>
           <h2>Shipping Details</h2>
 
@@ -106,7 +129,6 @@ export default function Checkout() {
           <input name="landmark" placeholder="Landmark (Optional)" onChange={handleChange} />
         </div>
 
-        {/* Order Summary */}
         <div style={styles.summary}>
           <h2>Order Summary</h2>
 

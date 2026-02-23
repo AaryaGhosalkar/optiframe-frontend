@@ -9,6 +9,7 @@ import LoginSelector from "./pages/LoginSelector";
 import CustomerLogin from "./pages/CustomerLogin";
 import CustomerRegister from "./pages/CustomerRegister";
 import Orders from "./pages/Orders";
+import OrderSuccess from "./pages/OrderSuccess";
 import TryOn from "./pages/TryOn";
 import AdminLogin from "./pages/AdminLogin";
 import CustomerDahboard from "./pages/CustomerDashboard";
@@ -109,6 +110,7 @@ export default function App() {
         <Route path="/customer-login" element={<CustomerLogin />} />
         <Route path="/register" element={<CustomerRegister />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
         <Route path="/tryon" element={<TryOn />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/dashboard" element={<CustomerDashboard />} />

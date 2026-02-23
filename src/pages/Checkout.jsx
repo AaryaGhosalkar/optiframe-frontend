@@ -20,11 +20,15 @@ export default function Checkout() {
   });
 
   useEffect(() => {
-    if (!customer) {
-      navigate("/customer-login");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser) {
+      window.location.href = "/login";
+      return;
     }
-  }, []);
 
+  setLoading(false);
+
+}, []);
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -67,7 +71,7 @@ export default function Checkout() {
 
         alert("Payment Successful!");
         clearCart();
-        navigate("/orders");
+        navigate("/order-success");
       },
       prefill: {
         name: form.fullName,

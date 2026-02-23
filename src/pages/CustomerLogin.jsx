@@ -47,9 +47,9 @@ export default function CustomerLogin() {
         navigate("/admin");
       } else {
         if (fromCheckout) {
-          navigate("/checkout");
+          window.location.href = "/checkout";
         } else {
-          navigate("/dashboard");
+          window.location.href = "/dashboard";
         }
       }
 

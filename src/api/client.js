@@ -1,4 +1,4 @@
-const API_URL = 'https://optiframe-backend.onrender.com';
+const API_URL = ' ';
 
 export async function fetchProducts() {
   const res = await fetch(`${API_URL}/api/products`);

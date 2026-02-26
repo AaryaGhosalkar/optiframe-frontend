@@ -51,7 +51,7 @@ export default function Checkout() {
     try {
       // 1️⃣ Create Razorpay order from backend
       const res = await fetch(
-        "https://optiframe-backend.onrender.com/api/payment/create-order",
+        " /api/payment/create-order",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -73,7 +73,7 @@ export default function Checkout() {
         handler: async function (response) {
           // 3️⃣ Save order in database
           await fetch(
-            "https://optiframe-backend.onrender.com/api/orders",
+            " /api/orders",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },

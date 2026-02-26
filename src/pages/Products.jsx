@@ -8,7 +8,7 @@ export default function Products() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://optiframe-backend.onrender.com/api/products")
+    fetch(" /api/products")
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error(err));

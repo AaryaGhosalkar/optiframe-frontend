@@ -18,7 +18,7 @@ export default function CustomerRegister() {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://optiframe-backend.onrender.com/api/auth/register", {
+      const res = await fetch(" /api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

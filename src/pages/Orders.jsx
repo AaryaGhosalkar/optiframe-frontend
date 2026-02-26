@@ -13,7 +13,7 @@ export default function Orders() {
     return;
   }
 
-  fetch("https://optiframe-backend.onrender.com/api/orders")
+  fetch(" /api/orders")
     .then((res) => res.json())
     .then((data) => {
       const userOrders = data.filter(

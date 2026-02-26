@@ -21,7 +21,7 @@ export default function CustomerLogin() {
 
     try {
       const res = await fetch(
-        "https://optiframe-backend.onrender.com/api/auth/login",
+        " /api/auth/login",
         {
           method: "POST",
           headers: {

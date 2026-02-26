@@ -25,13 +25,13 @@ export default function AdminDashboard() {
   // ================= FETCH DATA =================
 
   const fetchProducts = async () => {
-    const res = await fetch("https://optiframe-backend.onrender.com/api/products");
+    const res = await fetch(" /api/products");
     const data = await res.json();
     setProducts(data);
   };
 
   const fetchOrders = async () => {
-    const res = await fetch("https://optiframe-backend.onrender.com/api/orders");
+    const res = await fetch(" /api/orders");
     const data = await res.json();
     setOrders(data);
   };
@@ -44,7 +44,7 @@ export default function AdminDashboard() {
   // ================= ADD PRODUCT =================
 
   const addProduct = async () => {
-    await fetch("https://optiframe-backend.onrender.com/api/products", {
+    await fetch(" /api/products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
   // ================= DELETE PRODUCT =================
 
   const deleteProduct = async (id) => {
-    await fetch(`https://optiframe-backend.onrender.com/api/products/${id}`, {
+    await fetch(` /api/products/${id}`, {
       method: "DELETE",
     });
 
@@ -81,7 +81,7 @@ export default function AdminDashboard() {
   // ================= UPDATE STOCK =================
 
   const updateStock = async (id, newStock) => {
-    await fetch(`https://optiframe-backend.onrender.com/api/products/${id}`, {
+    await fetch(` /api/products/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ stock: newStock }),
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
   // ================= UPDATE ORDER STATUS =================
 
   const updateStatus = async (id, status) => {
-    const res = await fetch(`https://optiframe-backend.onrender.com/api/orders/${id}`, {
+    const res = await fetch(` /api/orders/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),

@@ -25,7 +25,7 @@ export default function AdminDashboard() {
   // ================= FETCH DATA =================
 
   const fetchProducts = async () => {
-    const res = await fetch("https://optiframe-backend.onrender.com///api/products");
+    const res = await fetch("https://optiframe-backend.onrender.com/api/products");
     const data = await res.json();
     setProducts(data);
   };

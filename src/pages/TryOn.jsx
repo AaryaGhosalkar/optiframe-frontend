@@ -102,7 +102,7 @@ export default function TryOn() {
       {/* Frame from product */}
       <img
         ref={frameRef}
-        src={`/frames/frame1.png`}
+        src={framePath || "/frames/frame1.png"}
         alt="frame"
         style={styles.overlay}
       />

@@ -43,71 +43,60 @@ export default function Checkout() {
   const total = subtotal + shipping + gst;
 
   const handlePayment = async () => {
-    if (!form.fullName || !form.phone || !form.address1 || !form.pincode) {
-      alert("Please fill required fields");
+  try {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser) {
+      alert("Please login first");
+      navigate("/login");
       return;
     }
 
-    try {
-      // 1️⃣ Create Razorpay order from backend
-      const res = await fetch(
-        " /api/payment/create-order",
-        {
+    // 1️⃣ Create order in backend
+    const res = await fetch("/api/payment/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: total }),
+    });
+
+    const orderData = await res.json();
+
+    const options = {
+      key: "rzp_test_xxxxxxxxx", // your TEST key id
+      amount: orderData.amount,
+      currency: orderData.currency,
+      name: "OptiFrame",
+      description: "Eyewear Purchase",
+      order_id: orderData.id,
+
+      handler: async function (response) {
+        // 2️⃣ Save order in DB
+        await fetch("/api/orders", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount: total }),
-        }
-      );
+          body: JSON.stringify({
+            customerEmail: storedUser.email,
+            items: cartItems,
+            totalAmount: total,
+            shippingAddress: form,
+            paymentId: response.razorpay_payment_id,
+          }),
+        });
 
-      const order = await res.json();
+        clearCart();
+        navigate("/order-success");
+      },
 
-      // 2️⃣ Open Razorpay popup
-      const options = {
-        key: "rzp_test_SJjZfILcxAlVBJ", // <-- PUT YOUR TEST KEY HERE
-        amount: order.amount,
-        currency: order.currency,
-        order_id: order.id,
-        name: "OptiFrame",
-        description: "Eyewear Purchase",
+      theme: { color: "#111" },
+    };
 
-        handler: async function (response) {
-          // 3️⃣ Save order in database
-          await fetch(
-            " /api/orders",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                customerEmail: storedUser.email,
-                items: cartItems,
-                totalAmount: total,
-                shippingAddress: form,
-                paymentId: response.razorpay_payment_id,
-              }),
-            }
-          );
+    const rzp = new window.Razorpay(options);
+    rzp.open();
 
-          clearCart();
-          window.location.href = "/order-success";
-        },
-
-        prefill: {
-          name: form.fullName,
-          email: storedUser.email,
-          contact: form.phone,
-        },
-
-        theme: { color: "#111" },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-
-    } catch (err) {
-      alert("Payment failed");
-      console.error(err);
-    }
-  };
+  } catch (err) {
+    alert("Payment failed");
+    console.error(err);
+  }
+};
 
   if (loading) return null;
 
